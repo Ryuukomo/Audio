@@ -1,7 +1,9 @@
 using UnityEngine;
 
 public class FirstPersonShoot : MonoBehaviour
-{
+{   
+    public Transform particulaTiro;
+    public Transform ancoratiro;
     float distanciatiro = Mathf.Infinity;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,6 +23,10 @@ public class FirstPersonShoot : MonoBehaviour
 
     void Atira()
     {
+        Transform instanciado = Instantiate(particulaTiro);
+        instanciado.position = ancoratiro.position;
+        instanciado.rotation = Quaternion.Euler(ancoratiro.rotation.eulerAngles + new Vector3(0,90,0));
+        instanciado.parent = ancoratiro;
         Ray raio = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
 
