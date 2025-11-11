@@ -4,6 +4,7 @@ public class FirstPersonShoot : MonoBehaviour
 {   
     public Transform particulaTiro;
     public Transform ancoratiro;
+    public AudioSource AudioSource;
     float distanciatiro = Mathf.Infinity;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -23,6 +24,10 @@ public class FirstPersonShoot : MonoBehaviour
 
     void Atira()
     {
+        AudioSource.pitch = Random.Range(0.8f, 1.2f);
+        AudioSource.Play();
+        AudioSource.PlayOneShot(AudioSource.clip);
+  
         Transform instanciado = Instantiate(particulaTiro);
         instanciado.position = ancoratiro.position;
         instanciado.rotation = Quaternion.Euler(ancoratiro.rotation.eulerAngles + new Vector3(0,90,0));
