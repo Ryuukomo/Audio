@@ -4,9 +4,15 @@ public class FirstPersonShoot : MonoBehaviour
 {   
     public Transform particulaTiro;
     public Transform ancoratiro;
+
+    [Space]
+    [Header("Parte do Audio fica aqui")]
+
     public AudioSource AudioSource;
+    public AudioClip Tiro1;
+    public AudioClip Tiro2;
     float distanciatiro = Mathf.Infinity;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         
@@ -25,8 +31,16 @@ public class FirstPersonShoot : MonoBehaviour
     void Atira()
     {
         AudioSource.pitch = Random.Range(0.8f, 1.2f);
-        AudioSource.Play();
-        AudioSource.PlayOneShot(AudioSource.clip);
+
+        if (Random.Range(0, 2) == 1)
+        {
+            AudioSource.PlayOneShot(Tiro1);
+        }
+        else
+        {
+            AudioClip clip = Tiro2;
+            AudioSource.Play();
+        }
   
         Transform instanciado = Instantiate(particulaTiro);
         instanciado.position = ancoratiro.position;
@@ -42,7 +56,8 @@ public class FirstPersonShoot : MonoBehaviour
                 inimigo.ReceberDano(1);
 
                 Vector3 direcaoTiro = hit.transform.position - Camera.main.transform.position;
-                inimigo.transform.GetComponent<Rigidbody>().AddForce(direcaoTiro * 5, ForceMode.Impulse);   
+                inimigo.transform.GetComponent<Rigidbody>().AddForce(direcaoTiro * 5, ForceMode.Impulse);  
+                //Instantiate(particulaTiro2).position = hit.point;
             }
         }
     }
