@@ -9,6 +9,7 @@ public class FirstPersonShoot : MonoBehaviour
     [Header("Parte do Audio fica aqui")]
 
     public AudioSource AudioSource;
+    
     public AudioClip Tiro1;
     public AudioClip Tiro2;
     float distanciatiro = Mathf.Infinity;
@@ -28,8 +29,10 @@ public class FirstPersonShoot : MonoBehaviour
      
     }
 
+   
     void Atira()
     {
+        transform.GetComponent<FirstPersonPlayer>().tiro();
         AudioSource.pitch = Random.Range(0.8f, 1.2f);
 
         if (Random.Range(0, 2) == 1)
@@ -42,6 +45,7 @@ public class FirstPersonShoot : MonoBehaviour
             AudioSource.Play();
         }
   
+       
         Transform instanciado = Instantiate(particulaTiro);
         instanciado.position = ancoratiro.position;
         instanciado.rotation = Quaternion.Euler(ancoratiro.rotation.eulerAngles + new Vector3(0,90,0));

@@ -12,7 +12,9 @@ public class FirstPersonPlayer : MonoBehaviour
  
     Transform pistol;
     Transform ancorapistola;
+    public Animator animator;
     CharacterController characterController;
+    public AudioSource passos;
     
     Vector3 velocidade; 
     void Start()
@@ -30,6 +32,8 @@ public class FirstPersonPlayer : MonoBehaviour
         Movimento();
         OlharDigital();
         MoveBraço();
+        AnimaAnda();
+        abaixar();
     }
 
     void Movimento()
@@ -46,9 +50,22 @@ public class FirstPersonPlayer : MonoBehaviour
         {
             movimento = movimento.normalized;
         }
-        
-        characterController.Move(movimento * Time.deltaTime * velocidadeMovimento);
+          if (movimento.magnitude > 0.1f)
+        {
+            if (passos.isPlaying == false)
+            {
+                passos.Play();
+            }
 
+
+        }
+        else
+            {
+                passos.Stop();
+            }
+
+        //characterController.Move(movimento * Time.deltaTime * velocidadeMovimento);
+      
         if (velocidade.y < 0 && estachao == true) 
         {
             velocidade.y = -1f;
@@ -59,7 +76,10 @@ public class FirstPersonPlayer : MonoBehaviour
             velocidade.y = Mathf.Sqrt(1.5f * -2f * gravidade);
         }
         velocidade.y += gravidade * Time.deltaTime;
-        characterController.Move(velocidade * Time.deltaTime);
+        
+        Vector3 movimentofinal = (movimento * velocidadeMovimento + velocidade) * Time.deltaTime;
+
+        characterController.Move(movimentofinal);
     }
 
     void OlharDigital()
@@ -81,5 +101,37 @@ public class FirstPersonPlayer : MonoBehaviour
 
         pistol.position = Vector3.Lerp(pistol.position, ancorapistola.position, delayBraco * Time.deltaTime);
         pistol.rotation = Quaternion.Lerp(pistol.rotation, ancorapistola.rotation, delayBraco * Time.deltaTime);
+    }
+
+    public void tiro()
+    {
+        animator.SetTrigger("tiro");
+    }
+
+    void abaixar ()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            characterController.height = 1.25f;
+        }
+        if (Input.GetKeyUp(KeyCode.L))
+        {
+            characterController.height = 2f;
+        }
+    }
+    void AnimaAnda()
+    {
+        Vector3 velocidadeY = characterController.velocity;
+        velocidadeY.y = 0;
+
+        animator.SetFloat("andando", velocidadeY.magnitude);
+        //if(characterController.velocity.magnitude > 0.1f)
+        //{
+        //    animator.SetBool("andando", true);
+        //}
+        //else
+        //{
+        //    animator.SetBool("andando", false);
+        //}
     }
 }
